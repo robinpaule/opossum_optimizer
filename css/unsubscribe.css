@@ -1,0 +1,118 @@
+
+  .unsubscribe-container {
+    width: 100%;
+    display: flex;
+    overflow: auto;
+    min-height: 100vh;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .unsubscribe-legal-notice-wrapper {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-self: flex-start;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .unsubscribe-headline-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: var(--dl-color-primary-lightblue);
+  }
+  .unsubscribe-headline {
+    width: 100%;
+    max-width: 1000px;
+    align-self: center;
+    font-style: normal;
+    text-align: left;
+    padding-top: var(--dl-space-space-threeunits);
+    padding-left: var(--dl-space-space-oneandhalfunits);
+    padding-right: var(--dl-space-space-oneandhalfunits);
+    padding-bottom: var(--dl-space-space-threeunits);
+  }
+  .unsubscribe-tilt-right {
+    width: 100%;
+    height: 3rem;
+    clip-path: polygon(0 0, 100% 100%, 100% 0);
+    margin-top: -1px;
+    background-color: var(--dl-color-primary-lightblue);
+    -webkit-clip-path: polygon(0 0, 100% 100%, 100% 0);
+  }
+  .unsubscribe-content {
+    gap: var(--dl-space-space-twounits);
+    display: flex;
+    margin-top: var(--dl-space-space-twounits);
+    align-items: center;
+    padding-left: var(--dl-space-space-unit);
+    margin-bottom: var(--dl-space-space-twounits);
+    padding-right: var(--dl-space-space-unit);
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .unsubscribe-text {
+    text-align: center;
+  }
+  .unsubscribe-text4 {
+    font-style: normal;
+    font-weight: 700;
+  }
+  .unsubscribe-button {
+    transition: 0.3s;
+    background-color: var(--dl-color-primary-green);
+  }
+  .unsubscribe-button:disabled {
+    color: #6b6b6b;
+    background-color: #dadada;
+  }
+  .unsubscribe-footer-area {
+    width: 100%;
+    bottom: 0;
+    display: flex;
+    position: fixed;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .unsubscribe-tilt-left {
+    width: 100%;
+    height: 3rem;
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
+    margin-bottom: -1px;
+    background-color: var(--dl-color-primary-lightblue);
+    -webkit-clip-path: polygon(0 100%, 100% 100%, 100% 0);
+  }
+  @media(max-width: 991px) {
+    .unsubscribe-button {
+      background-color: var(--dl-color-primary-green);
+    }
+  }
+  @media(max-width: 767px) {
+    .unsubscribe-tilt-right {
+      height: 3rem;
+    }
+    .unsubscribe-footer-area {
+      position: relative;
+    }
+    .unsubscribe-tilt-left {
+      height: 3rem;
+    }
+  }
+  @media(max-width: 479px) {
+    .unsubscribe-tilt-right {
+      height: 2rem;
+    }
+    .unsubscribe-button {
+      width: 100%;
+      align-self: center;
+    }
+    .unsubscribe-tilt-left {
+      height: 2rem;
+    }
+  }
+  
