@@ -231,3 +231,13 @@ body {
 .link {
   text-decoration: underline;
 }
+
+.input-error {
+  border: 1px solid red;
+  background-color: #ffe6e6;
+}
+
+.input-error:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+}
