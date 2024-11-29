@@ -1071,14 +1071,14 @@
   width: auto;
   height: auto;
   min-width: 520px;
-  min-height: 300px;
+  min-height: 292px;
 }
 .home-iframe1 {
   flex: 1;
   width: auto;
   height: auto;
   min-width: 520px;
-  min-height: 300px;
+  min-height: 292px;
 }
 .home-text-block1 {
   width: auto;
@@ -1601,7 +1601,7 @@
     height: auto;
     min-width: 330px;
     align-self: flex-start;
-    min-height: 242px;
+    min-height: 185px;
   }
   .home-iframe1 {
     flex: 0;
@@ -1609,7 +1609,7 @@
     height: auto;
     min-width: 330px;
     align-self: flex-start;
-    min-height: 242px;
+    min-height: 185px;
   }
   .home-text47 {
     text-align: left;
