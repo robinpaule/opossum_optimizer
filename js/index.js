@@ -1,232 +1,775 @@
-/// FIREBASE SETUP //--------------------------------------------------------
-// Import the functions from the SDKs needed
-const generateLicenseCF = 'https://us-central1-opossum-website.cloudfunctions.net/generateLicenseKey';
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
-import { signInAnonymously, getAuth } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Opossum Optimizer</title>
+    <link rel="icon" type="image/x-icon" href="./assets/logos/opossumlogo256-1500h.ico">
+    <meta property="og:title" content="Supportive Mature Parrot" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/animate.css@4.1.1/animate.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Miriam+Libre:wght@400;700&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css"
+    />
+  </head>
+  <body class="body-no-scroll">
+    <link rel="stylesheet" href="./css/style.css" />
+    <div>
+      <link href="./css/index.css" rel="stylesheet" />
+      <link href="./css/custom.css" rel="stylesheet" />
+      <div class="home-container">
+        <div class="privacy-consent-wrapper" id="popupPrivacyConsent">
+          <div class="privacy-consent">
+            <span class="Content-L">Data Privacy Conset</span>
+            <p class="Content">We use cookies and other third party services to provide a smooth experience and keep this site running. 
+              <br><br>For more details, see our <a href="./legal-notice.html" target="_blank">Privacy Policies</a>.</p>
+            <button class="button" id="consentPrivacyButton">Consent and continue</button>
+          </div>
+        </div>
+        <div class="menu-container menu-root-class-name">
+          <div class="menu-header-wrapper">
+            <header data-role="Header" class="menu-header">
+              <div class="menu-container1">
+                <a href="#headerSection" class="menu-container2">
+                  <img
+                    alt="image"
+                    src="assets/logos/opossumlogo256-1500h.ico"
+                    class="menu-image"
+                  />
+                  <span class="menu-text"><span>Opossum</span></span>
+                </a>
+                <div class="menu-nav">
+                  <nav class="menu-nav1">
+                    <a href="#licenseSection" class="menu-text01">
+                      <span>License</span>
+                    </a>                   
+                    <a
+                      href="https://www.food4rhino.com/en/app/opossum-optimization-solver-surrogate-models"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      class="menu-link"
+                    >
+                      <span>Download</span>
+                    </a>
+                    <a href="#learnSection" class="menu-text02">
+                      <span ><span>Learn</span></span>
+                    </a>
+                    <a href="#contributorsSection" class="menu-text03">
+                      <span>Team</span>
+                    </a>
+                    <a href="#faqSection" class="menu-text04">
+                      <span>FAQ</span>
+                    </a>
+                  </nav>
+                </div>
+              </div>
+              <div data-role="BurgerMenu" class="menu-burger-menu">
+                <svg viewBox="0 0 1024 1024" class="menu-icon">
+                  <path
+                    d="M128 554.667h768c23.552 0 42.667-19.115 42.667-42.667s-19.115-42.667-42.667-42.667h-768c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667zM128 298.667h768c23.552 0 42.667-19.115 42.667-42.667s-19.115-42.667-42.667-42.667h-768c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667zM128 810.667h768c23.552 0 42.667-19.115 42.667-42.667s-19.115-42.667-42.667-42.667h-768c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667z"
+                  ></path>
+                </svg>
+              </div>
+              <div data-role="MobileMenu" class="menu-mobile-menu">
+                <div class="menu-nav2">
+                  <div class="menu-container3">
+                    <div class="menu-container4">
+                      <img
+                        alt="image"
+                        src="assets/logos/opossumlogo256-1500h.ico"
+                        class="menu-image1"
+                      />
+                      <span class="menu-text05"><span>Opossum</span></span>
+                    </div>
 
-let db, auth;
-
-function initializeFirebase() {
-    return new Promise((resolve, reject) => {
-        try {
-            const firebaseConfig = {
-                apiKey: "AIzaSyB1fjmOBZgeLK1_rlFcqP9tiGwcx2V328E",
-                authDomain: "opossum-website.firebaseapp.com",
-                databaseURL: "https://opossum-website-default-rtdb.europe-west1.firebasedatabase.app",
-                projectId: "opossum-website",
-                storageBucket: "opossum-website.appspot.com",
-                messagingSenderId: "512600023033",
-                appId: "1:512600023033:web:9f198a00e96baf05b8a728",
-                measurementId: "G-6JDLKFQKLE"
-            };
-            const app = initializeApp(firebaseConfig);
-            db = getDatabase(app);
-            auth = getAuth(app);
-            resolve(db); // Resolve with db if you might use it right away
-        } catch (error) {
-            console.error("Error initializing Firebase:", error);
-            reject(error);
-        }
-    });
-}
-
-// Function to get the selected dropdown value
-function getSelectedValue() {
-    var dropdown = document.querySelector('.home-institution-dropdown .dropdown');
-    return dropdown.getAttribute('data-selected-value');
-}
-
-// handle signup process
-document.getElementById('generateButton').addEventListener('click', async function() {
-    const firstName = document.getElementById('firstName').value;
-    const lastName = document.getElementById('lastName').value;
-    const institution = document.getElementById('institution').value;
-    const userEmail = document.getElementById('userEmail').value;
-    const roleSelection = getSelectedValue();
-    console.log(roleSelection)
-
-    const registerSection = document.getElementById('registerForm');
-    const loadingAnimation = document.getElementById('loader');
-    registerSection.style.display = 'none';
-    loadingAnimation.style.display = 'contents';
-    signInAnonymously(auth)
-      .then(async () => {
-        try {
-            const response = await fetch(generateLicenseCF, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    firstName: firstName,
-                    lastName: lastName,
-                    role: roleSelection,
-                    institution: institution,
-                    email: userEmail,
-                    uid: auth.currentUser.uid
-
-                })
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                const licenseKey = data.licenseKey;
-
-                const registrationSuccess = document.getElementById('registrationSuccess');
-                const generatedLicenseKey = document.getElementById('generatedLicenseKey');
-                generatedLicenseKey.textContent = licenseKey;
-                loadingAnimation.style.display = 'none';
-                registrationSuccess.style.display = 'flex';
-                document.getElementById('userMailConfirmation').textContent = userEmail;
-            } else {
-                loadingAnimation.style.display = "none";
-                document.getElementById('registrationFailed').style.display = "contents";
-            }
-        } catch (error) {
-            console.error('Error during license key generation:', error);
-        }
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error('Error signing in anonymously:', errorCode, errorMessage);
-      });
-});
-
-// Check if the cookieConsent cookie is set to true
-function checkCookieConsent() {
-    const cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)cookieConsent\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    return cookieValue === "true";
-}
-
-// load third party sercices after consent is given
-async function loadPage() {
-    document.body.classList.remove('body-no-scroll');
-    const alertPrivacyConsent = document.getElementById('popupPrivacyConsent');
-    alertPrivacyConsent.style.opacity = '0';
-
-    try {
-        await initializeFirebase();
-        await updateDownloadCount();
-
-        document.getElementById('vimeoIframe1').src = "https://player.vimeo.com/video/737562868?h=20a00338b4&dnt=1";
-        document.getElementById('vimeoIframe2').src = "https://player.vimeo.com/video/737870683?h=20a00338b4&dnt=1";
-
-        setTimeout(() => {
-            alertPrivacyConsent.style.display = 'none';
-        }, 500);
-    } catch (error) {
-        console.error("An error occurred during page load:", error);
-    }
-}
-
-function checkButtonState() {
-    const userEmail = document.getElementById('userEmail').value;
-    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    const agreeCheckbox = document.getElementById('agreeTerms');
-    const generateButton = document.getElementById('generateButton');
-    const consentPrivacyButton = document.getElementById('consentPrivacyButton')
-    consentPrivacyButton.addEventListener('click', function() {
-        document.cookie = "cookieConsent=true; path=/; max-age=" + (60*60*24*365); // Set cookie for 1 year
-        loadPage();
-    });
-
-    if (emailPattern.test(userEmail) && agreeCheckbox.checked) {
-        generateButton.removeAttribute('disabled');
-    } else {
-        generateButton.setAttribute('disabled', true);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    if (!checkCookieConsent()) {
-        document.getElementById('popupPrivacyConsent').style.display = 'flex';
-        document.body.classList.add('body-no-scroll');
-        checkButtonState();
-    } 
-    else {
-        checkButtonState();
-        handleMenuNavigation();
-        loadPage();
-    }
-});
-
-document.getElementById('userEmail').addEventListener('input', checkButtonState);
-document.getElementById('agreeTerms').addEventListener('change', checkButtonState);
-
-// copy license key after successfull signup
-document.getElementById('copyButton').addEventListener('click', function() {
-    const licenseKey = document.getElementById('generatedLicenseKey').textContent;
-    copyToClipboard(licenseKey);
-    document.getElementById("clipboardC").style.display = "none";
-    document.getElementById("checkmarkC").style.display = "block";
-});
-
-function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(function() {
-        document.getElementById('copyButtonText').textContent = 'Copied';
-    }).catch(function(err) {
-        console.error('Failed to copy text: ', err);
-    });
-}
-
-
-// FAQ Events
-document.addEventListener('DOMContentLoaded', function() {
-    var faqQuestions = document.querySelectorAll('.faq-question');
-
-    faqQuestions.forEach(function(question) {
-        question.addEventListener('click', function() {
-            var answer = this.nextElementSibling;
-            var svgArrow = this.querySelector('.svg-icon');
-
-            answer.classList.toggle('active');
-            var isOpen = answer.classList.contains('active');
-
-            answer.style.maxHeight = isOpen ? answer.scrollHeight + 20 + "px": null;
-
-            this.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-
-            svgArrow.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
-            svgArrow.style.transition = 'transform 0.5s ease';
-        });
-    });
-});
-
-// make Menu work on INDEX
-function handleMenuNavigation() {
-const hash = window.location.hash;
-if (hash) {
-    const targetSection = document.querySelector(hash);
-    if (targetSection) {
-    targetSection.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-    });
-    }
-}
-}
-
-document.addEventListener('DOMContentLoaded', handleMenuNavigation);
-window.addEventListener('hashchange', handleMenuNavigation);
-
-// Fetch Opossum Download Count
-function updateDownloadCount() {
-    return new Promise((resolve, reject) => {
-        const downloadCountRef = ref(db, 'downloadCount');
-        get(downloadCountRef).then((snapshot) => {
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                document.getElementById('download-count').textContent = data.count;
-                resolve();
-            } else {
-                console.log('No download count data available.');
-                reject('No data available');
-            }
-        }).catch((error) => {
-            console.error('Error fetching download count:', error);
-            reject(error);
-        });
-    });
-}
+                  </div>
+                  <div class="menu-container5">
+                    <a href="#licenseSection" class="Content-M">
+                      <span>License</span> 
+                    </a>
+                    <a
+                      href="https://www.food4rhino.com/en/app/opossum-optimization-solver-surrogate-models"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                    <span class="Content-M">Download</span>
+                    <a href="#learnSection" class="Content-M">
+                      <span>Learn</span> 
+                    </a>
+                    <a href="#contributorsSection" class="Content-M">
+                      <span>Team</span> 
+                    </a>
+                    <a href="#faqSection" class="Content-M">
+                      <span>FAQ</span> 
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </header>
+          </div>
+        </div>
+        <div id="headerSection" class="home-header-wrapper">
+          <div class="home-header">
+            <div class="home-headline">
+              <span class="home-text">
+                So many solutions. Find the best one!
+              </span>
+              <span class="home-subline Content-M">
+                <span class="home-text01 Content-M">
+                  Opossum uses the best-performing optimization algorithms to
+                  enhance your projects in Grasshopper for Rhinoceros® - completely
+                </span>
+                <span class="home-text04 Content-M">free.</span>
+              </span>
+            </div>
+            <img
+              alt="image"
+              src="assets/external/performance_explorer_gui-1500w.png"
+              class="home-image big-element"
+            />
+          </div>
+        </div>
+        <div class="home-social-proof-wrapper">
+          <div class="home-social-proof">
+            <a
+              href="https://www.food4rhino.com/en/app/opossum-optimization-solver-surrogate-models"
+              target="_blank"
+              rel="noreferrer noopener"
+              class="home-link"
+            >
+              <div class="home-downloads external">
+                <svg viewBox="0 0 1024 1024" class="home-icon">
+                  <path
+                    d="M726 554h-128v-170h-172v170h-128l214 214zM826 428q82 6 140 67t58 145q0 88-63 151t-151 63h-554q-106 0-181-75t-75-181q0-94 67-169t161-85q42-78 118-126t166-48q108 0 201 76t113 182z"
+                  ></path>
+                </svg>
+                <div class="home-container01">
+                  <span class="home-text06 Content-L">
+                    <span id="download-count">13000+</span>
+                    <br />
+                  </span>
+                  <span class="home-text09">
+                    <span>Downloads</span>
+                    <br />
+                  </span>
+                </div>
+              </div>
+            </a>
+            <a
+              href="https://www.ini.rub.de/PEOPLE/glasmtbl/projects/bbcomp/results/BBComp2019-2OBJ-expensive/summary.html"
+              target="_blank"
+              rel="noreferrer noopener"
+              class="home-link1"
+            >
+              <div class="external proofLinks home-black-box-competition">
+                <svg viewBox="0 0 950.8571428571428 1024" class="home-icon02">
+                  <path
+                    d="M261.714 504.571c-24-52.571-42.286-122.286-42.286-212h-146.286v54.857c0 56 76 133.714 188.571 157.143zM877.714 347.429v-54.857h-146.286c0 89.714-18.286 159.429-42.286 212 112.571-23.429 188.571-101.143 188.571-157.143zM950.857 274.286v73.143c0 108.571-131.429 228.571-309.714 237.143-22.857 29.143-44 46.286-54.286 54.286-30.286 27.429-38.286 56-38.286 92.571s18.286 73.143 73.143 73.143 109.714 36.571 109.714 91.429v36.571c0 10.286-8 18.286-18.286 18.286h-475.429c-10.286 0-18.286-8-18.286-18.286v-36.571c0-54.857 54.857-91.429 109.714-91.429s73.143-36.571 73.143-73.143-8-65.143-38.286-92.571c-10.286-8-31.429-25.143-54.286-54.286-178.286-8.571-309.714-128.571-309.714-237.143v-73.143c0-30.286 24.571-54.857 54.857-54.857h164.571v-54.857c0-50.286 41.143-91.429 91.429-91.429h329.143c50.286 0 91.429 41.143 91.429 91.429v54.857h164.571c30.286 0 54.857 24.571 54.857 54.857z"
+                  ></path>
+                </svg>
+                <span class="home-text12 Content-L">
+                  <span>Black Box Optimization Competition</span>
+                  <br />
+                </span>
+              </div>
+            </a>
+            <a
+              href="https://www.food4rhino.com/en/app/opossum-optimization-solver-surrogate-models"
+              target="_blank"
+              rel="noreferrer noopener"
+              class="home-link2"
+            >
+              <div class="home-rating external">
+                <div class="home-stars">
+                  <svg viewBox="0 0 1024 1024" class="home-icon04">
+                    <path
+                      d="M512 736l-264 160 70-300-232-202 306-26 120-282 120 282 306 26-232 202 70 300z"
+                    ></path></svg
+                  ><svg viewBox="0 0 1024 1024" class="home-icon06">
+                    <path
+                      d="M512 736l-264 160 70-300-232-202 306-26 120-282 120 282 306 26-232 202 70 300z"
+                    ></path></svg
+                  ><svg viewBox="0 0 1024 1024" class="home-icon08">
+                    <path
+                      d="M512 736l-264 160 70-300-232-202 306-26 120-282 120 282 306 26-232 202 70 300z"
+                    ></path></svg
+                  ><svg viewBox="0 0 1024 1024" class="home-icon10">
+                    <path
+                      d="M512 736l-264 160 70-300-232-202 306-26 120-282 120 282 306 26-232 202 70 300z"
+                    ></path></svg
+                  ><svg viewBox="0 0 1024 1024" class="home-icon12">
+                    <path
+                      d="M512 736l-264 160 70-300-232-202 306-26 120-282 120 282 306 26-232 202 70 300z"
+                    ></path>
+                  </svg>
+                </div>
+                <span class="home-text15 Content">on food4rhino.com</span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="home-arrow-one"></div>
+        <div id="licenseSection" class="home-registration-wrapper">
+          <div id="registerForm" class="home-container02">
+            <div class="home-container03">
+              <h1 class="home-text16 Heading">
+                Get a free license key now.
+              </h1>
+              <span class="home-text17 Content">
+                Yes it’s true! As we want to keep research open to everyone you
+                do not have to pay anything to use Opossum. Just register with
+                your email to recieve your license key in under a minute.
+              </span>
+            </div>
+            <div class="home-container04">
+              <div class="registration-row">
+                <div class="home-field">
+                  <label class="home-text18">First Name</label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    placeholder="First Name"
+                    class="input"
+                  />
+                </div>
+                <div class="home-field1">
+                  <label class="home-text19">
+                    <span>Last Name</span>
+                    <br />
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    placeholder="Last Name"
+                    class="input"
+                  />
+                </div>
+              </div>
+              <div class="registration-row">
+                <div class="home-institution-dropdown">
+                  <label class="home-text22">Role</label>
+                  <button id="roleSelection" class="dropdown">Choose</button>
+                  <div class="dropdown-items">
+                      <span class="dropdown-element">Professional</span>
+                      <span class="dropdown-element">Student</span>
+                      <span class="dropdown-element">Academic / Researcher</span>
+                  </div>
+                </div>
+                <div class="home-insitution-field">
+                  <label class="home-text22">Institution / Company</label>
+                  <input
+                    type="text"
+                    id="institution"
+                    placeholder="e.g. University of Stuttgart"
+                    class="input"
+                  />
+                </div>
+              </div>
+              <div class="home-email-field">
+                <label class="home-label">Email*</label>
+                <input
+                  type="email"
+                  id="userEmail"
+                  placeholder="email@example.com"
+                  class="input"
+                  required
+                />
+              </div>
+              <div class="home-container05">
+                <div class="home-container06">
+                  <div class="home-agree-to-tc">
+                    <input
+                      type="checkbox"
+                      id="agreeTerms"
+                      required=""
+                      class="home-checkbox"
+                    />
+                    <label for="agreeTerms" class="home-text23">
+                      I agree to the terms and conditions.
+                    </label>
+                  </div>
+                  <div class="home-container07">
+                    <a href="legal-notice.html#termsSection" class="home-text24" target="_blank">
+                      <span>Read more</span>
+                    </a>
+                    <svg viewBox="0 0 1024 1024" class="home-icon14">
+                      <path
+                        d="M725.333 554.667v256c0 11.776-4.736 22.4-12.501 30.165s-18.389 12.501-30.165 12.501h-469.333c-11.776 0-22.4-4.736-30.165-12.501s-12.501-18.389-12.501-30.165v-469.333c0-11.776 4.736-22.4 12.501-30.165s18.389-12.501 30.165-12.501h256c23.552 0 42.667-19.115 42.667-42.667s-19.115-42.667-42.667-42.667h-256c-35.328 0-67.413 14.379-90.496 37.504s-37.504 55.168-37.504 90.496v469.333c0 35.328 14.379 67.413 37.504 90.496s55.168 37.504 90.496 37.504h469.333c35.328 0 67.413-14.379 90.496-37.504s37.504-55.168 37.504-90.496v-256c0-23.552-19.115-42.667-42.667-42.667s-42.667 19.115-42.667 42.667zM456.832 627.499l396.501-396.501v153.003c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667v-256c0-5.803-1.152-11.307-3.243-16.341s-5.163-9.728-9.216-13.781c-0.043-0.043-0.043-0.043-0.085-0.085-3.925-3.925-8.619-7.083-13.781-9.216-5.035-2.091-10.539-3.243-16.341-3.243h-256c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667h153.003l-396.501 396.501c-16.683 16.683-16.683 43.691 0 60.331s43.691 16.683 60.331 0z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+                <button
+                  id="generateButton"
+                  type="submit"
+                  class="home-button button"
+                >
+                  Get free license
+                </button>
+              </div>
+            </div>
+          </div>
+          <div id="loader" class="home-container08">
+            <svg viewBox="0 0 1024 1024" class="loadingCircle">
+              <path
+                d="M1024 512c-1.278-66.862-15.784-133.516-42.576-194.462-26.704-61-65.462-116.258-113.042-161.92-47.552-45.696-103.944-81.82-164.984-105.652-61.004-23.924-126.596-35.352-191.398-33.966-64.81 1.282-129.332 15.374-188.334 41.356-59.048 25.896-112.542 63.47-156.734 109.576-44.224 46.082-79.16 100.708-102.186 159.798-23.114 59.062-34.128 122.52-32.746 185.27 1.286 62.76 14.964 125.148 40.134 182.206 25.088 57.1 61.476 108.828 106.11 151.548 44.61 42.754 97.472 76.504 154.614 98.72 57.118 22.304 118.446 32.902 179.142 31.526 60.708-1.29 120.962-14.554 176.076-38.914 55.15-24.282 105.116-59.48 146.366-102.644 41.282-43.14 73.844-94.236 95.254-149.43 13.034-33.458 21.88-68.4 26.542-103.798 1.246 0.072 2.498 0.12 3.762 0.12 35.346 0 64-28.652 64-64 0-1.796-0.094-3.572-0.238-5.332h0.238zM922.306 681.948c-23.472 53.202-57.484 101.4-99.178 141.18-41.67 39.81-91 71.186-144.244 91.79-53.228 20.678-110.29 30.452-166.884 29.082-56.604-1.298-112.596-13.736-163.82-36.474-51.25-22.666-97.684-55.49-135.994-95.712-38.338-40.198-68.528-87.764-88.322-139.058-19.87-51.284-29.228-106.214-27.864-160.756 1.302-54.552 13.328-108.412 35.254-157.69 21.858-49.3 53.498-93.97 92.246-130.81 38.73-36.868 84.53-65.87 133.874-84.856 49.338-19.060 102.136-28.006 154.626-26.644 52.5 1.306 104.228 12.918 151.562 34.034 47.352 21.050 90.256 51.502 125.624 88.782 35.396 37.258 63.21 81.294 81.39 128.688 18.248 47.392 26.782 98.058 25.424 148.496h0.238c-0.144 1.76-0.238 3.536-0.238 5.332 0 33.012 24.992 60.174 57.086 63.624-6.224 34.822-16.53 68.818-30.78 100.992z"
+              ></path>
+            </svg>
+          </div>
+          <div id="registrationSuccess" class="home-container09">
+            <svg viewBox="0 0 1024 1024" class="home-icon18">
+              <path
+                d="M426 726l384-384-60-62-324 324-152-152-60 60zM512 86q176 0 301 125t125 301-125 301-301 125-301-125-125-301 125-301 301-125z"
+              ></path>
+            </svg>
+            <div class="home-container10">
+              <h1 class="home-text25 Heading">Email sent successfully!</h1>
+              <span class="home-text26">
+                  A confirmation email contaiting your perosnal license key has
+                  been sent to:
+              </span>
+              <span id="userMailConfirmation" class="home-text29">
+                email@example.com
+              </span>
+            </div>
+            <div class="home-container11">
+              <span class="home-text30">Your license key:</span>
+              <div class="home-container12">
+                <span id="generatedLicenseKey" class="Content-L">
+                  DISPLAY_LICENSE_KEY
+                </span>
+                <div id="copyButton" class="home-container13">
+                  <svg
+                    id="clipboardC"
+                    viewBox="0 0 1024 1024"
+                    class="home-icon20"
+                  >
+                    <path
+                      d="M298.667 213.333c0 23.552 9.6 44.928 25.003 60.331s36.779 25.003 60.331 25.003h256c23.552 0 44.928-9.6 60.331-25.003s25.003-36.779 25.003-60.331h42.667c11.776 0 22.4 4.736 30.165 12.501s12.501 18.389 12.501 30.165v597.333c0 11.776-4.736 22.4-12.501 30.165s-18.389 12.501-30.165 12.501h-512c-11.776 0-22.4-4.736-30.165-12.501s-12.501-18.389-12.501-30.165v-597.333c0-11.776 4.736-22.4 12.501-30.165s18.389-12.501 30.165-12.501zM384 42.667c-23.552 0-44.928 9.6-60.331 25.003s-25.003 36.779-25.003 60.331h-42.667c-35.328 0-67.413 14.379-90.496 37.504s-37.504 55.168-37.504 90.496v597.333c0 35.328 14.379 67.413 37.504 90.496s55.168 37.504 90.496 37.504h512c35.328 0 67.413-14.379 90.496-37.504s37.504-55.168 37.504-90.496v-597.333c0-35.328-14.379-67.413-37.504-90.496s-55.168-37.504-90.496-37.504h-42.667c0-23.552-9.6-44.928-25.003-60.331s-36.779-25.003-60.331-25.003zM384 128h256v85.333h-256z"
+                    ></path></svg
+                  ><svg
+                    id="checkmarkC"
+                    viewBox="0 0 1024 1024"
+                    class="home-icon22"
+                  >
+                    <path
+                      d="M823.168 225.835l-439.168 439.168-183.168-183.168c-16.683-16.683-43.691-16.683-60.331 0s-16.683 43.691 0 60.331l213.333 213.333c16.683 16.683 43.691 16.683 60.331 0l469.333-469.333c16.683-16.683 16.683-43.691 0-60.331s-43.691-16.683-60.331 0z"
+                    ></path>
+                  </svg>
+                  <button
+                    id="copyButtonText"
+                    type="submit"
+                    class="home-button1"
+                  >
+                    copy
+                  </button>
+                </div>
+              </div>
+              <a
+                href="https://www.food4rhino.com/en/app/opossum-optimization-solver-surrogate-models"
+                target="_blank"
+                rel="noreferrer noopener"
+                class="home-link3 button"
+              >
+                Download Opossum
+              </a>
+            </div>
+          </div>
+          <div id="registrationFailed" class="home-container14">
+            <svg viewBox="0 0 1024 1024" class="home-icon24">
+              <path
+                d="M512 0c-282.77 0-512 229.23-512 512s229.23 512 512 512 512-229.23 512-512-229.23-512-512-512zM704 256c35.346 0 64 28.654 64 64s-28.654 64-64 64-64-28.654-64-64 28.654-64 64-64zM320 256c35.346 0 64 28.654 64 64s-28.654 64-64 64-64-28.654-64-64 28.654-64 64-64zM704.098 780.74c-39.174-65.148-110.544-108.74-192.098-108.74-81.556 0-152.924 43.592-192.098 108.74l-82.328-49.396c55.96-93.070 157.916-155.344 274.426-155.344 116.508 0 218.464 62.274 274.426 155.344l-82.328 49.396z"
+              ></path>
+            </svg>
+            <div class="home-container15">
+              <h1 class="home-text32 Heading">Something went wrong!</h1>
+              <span class="home-text33">
+                You may have surpassed the rate limit or some other error
+                occured. Please reload the page and try again later.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="home-arrow-two"></div>
+        <div class="home-steps-wrapper">
+          <div class="home-container16">
+            <span class="home-text34 Heading">How to get started</span>
+            <div class="home-steps">
+              <div class="home-step-1">
+                <span class="Content-L">1. Sign up for a free license</span>
+                <span class="home-text36">
+                  Fill out the form above and receive a license in minutes.
+                </span>
+              </div>
+              <div class="home-step-2">
+                <span class="Content-L">2. Download Opossum</span>
+                <span class="home-text38">
+                  <a
+                    href="https://www.food4rhino.com/en/app/opossum-optimization-solver-surrogate-models"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    class="home-link4 Content"
+                  >
+                    Download
+                  </a>
+                  <span class="Content">
+                    the latest version of Opossum directly from food4rhino.
+                  </span>
+                  <br />
+                  <br />
+                  <a
+                    href="https://www.food4rhino.com/faq#users"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    class="link"
+                  >
+                    How to install a grasshopper plugin?
+                  </a>
+                  <br />
+                </span>
+              </div>
+              <div class="home-step-3">
+                <span class="Content-L">3. Login and optimize!</span>
+                <span class="home-text44 Content">
+                  That's it! After successfully login in you can now use Opossum
+                  for your projects. If you're not sure how, watch our
+                  tutorials.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="home-learn-section-wrapper" id="learnSection">
+          <div class="home-learn-section-one learn-section-row">
+            <div class="home-text-block">
+              <h1 class="home-text45 Heading">
+                Learn Opossum in just 15 minutes
+              </h1>
+              <span class="home-text46 Content">
+                Let one of the developers explain how Opossum works in this
+                quick video tutorial
+              </span>
+              <a href="./assets/downloads/opossum_example.gh" download>
+                <button id="downloadFile1" type="button" class="home-button2 pointer">
+                  Download tutorial file
+                </button>
+              </a>
+            </div>
+            <iframe
+              class="home-iframe" id="vimeoIframe1" allow="fullscreen"
+            ></iframe>
+          </div>
+          <div class="learn-section-row">
+            <iframe
+              class="home-iframe1" id="vimeoIframe2" allow="fullscreen"
+            ></iframe>
+            <div class="home-text-block1">
+              <h1 class="home-text47 Heading">
+                Intuitively visualize and explore
+              </h1>
+              <span class="home-text48 Content">
+                Let one of the developers explain how Opossum works in this
+                quick video tutorial
+              </span>
+              <a href="./assets/downloads/vopossum_example.gh" download>
+                <button id="downloadFile2" type="button" class="home-button3 pointer">
+                  Download tutorial file
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div id="contributorsSection" class="home-contributors-wrapper">
+          <div class="home-contributors">
+            <h1 class="Heading">Contributors</h1>
+            <div class="home-container20">
+              <span>Opossum is developed by the ICD/CA Optimization Team. This development is supported by 
+                the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) under Germany's Excellence Strategy - 
+                EXC 2120/1–3908311618 via the Cluster of Excellence Integrative 
+                Computational Design and Construction for Architecture (IntCDC).
+              </span>
+              <br>
+              <div class="SUTDcollab">
+                <span>
+                  Older versions of Opossum have been developed with support from               
+                </span>
+                <a
+                  href="https://www.sutd.edu.sg/"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  class="home-link6"
+                  >
+                  <div class="home-container21">
+                    <span class="home-text53">SUTD</span>
+                    <svg viewBox="0 0 1024 1024" class="home-icon26">
+                      <path
+                        d="M725.333 554.667v256c0 11.776-4.736 22.4-12.501 30.165s-18.389 12.501-30.165 12.501h-469.333c-11.776 0-22.4-4.736-30.165-12.501s-12.501-18.389-12.501-30.165v-469.333c0-11.776 4.736-22.4 12.501-30.165s18.389-12.501 30.165-12.501h256c23.552 0 42.667-19.115 42.667-42.667s-19.115-42.667-42.667-42.667h-256c-35.328 0-67.413 14.379-90.496 37.504s-37.504 55.168-37.504 90.496v469.333c0 35.328 14.379 67.413 37.504 90.496s55.168 37.504 90.496 37.504h469.333c35.328 0 67.413-14.379 90.496-37.504s37.504-55.168 37.504-90.496v-256c0-23.552-19.115-42.667-42.667-42.667s-42.667 19.115-42.667 42.667zM456.832 627.499l396.501-396.501v153.003c0 23.552 19.115 42.667 42.667 42.667s42.667-19.115 42.667-42.667v-256c0-5.803-1.152-11.307-3.243-16.341s-5.163-9.728-9.216-13.781c-0.043-0.043-0.043-0.043-0.085-0.085-3.925-3.925-8.619-7.083-13.781-9.216-5.035-2.091-10.539-3.243-16.341-3.243h-256c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667h153.003l-396.501 396.501c-16.683 16.683-16.683 43.691 0 60.331s43.691 16.683 60.331 0z"
+                      ></path>
+                    </svg>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="home-contributors-profiles">
+              <div class="person-card">
+                <img
+                  alt="image"
+                  src="assets/contributors/Wortmann_Portrait.jpg"
+                  class="profile-pic"
+                />
+                <div class="home-container18">
+                  <h1 class="home-text50 Content-L">Thomas Wortmann</h1>
+                  <span class="Content">Tenure-Track-Prof. Dr.</span>
+                </div>
+              </div>
+                <div class="person-card">
+                  <img
+                    alt="image"
+                    src="assets/contributors/Zorn_Portrait.jpg"
+                    class="profile-pic"
+                  />
+                  <div class="home-container23">
+                    <h1 class="home-text54 Content-L">Max Zorn</h1>
+                    <span class="Content">M.Sc.</span>
+                  </div>
+                </div>
+              <div class="person-card">
+                <img
+                  alt="image"
+                  src="assets/contributors/Akbar_Portrait.jpg"
+                  class="profile-pic"
+                />
+                <div class="home-container25">
+                  <h1 class="home-text56 Content-L">Zuardin Akbar</h1>
+                  <span class="Content">M. Arch., B. Eng</span>
+                </div>
+              </div>
+              <div class="person-card">
+                <img
+                  alt="image"
+                  src="assets/contributors/Dai_Portrait.jpg"
+                  class="profile-pic"
+                />
+                <div class="home-container25">
+                  <h1 class="home-text56 Content-L">Anni Dai</h1>
+                  <span class="Content">M. Arch., B. Arch</span>
+                </div>
+              </div>
+              <div class="person-card">
+                <img
+                  alt="image"
+                  src="assets/contributors/Paule_Portrait.jpg"
+                  class="profile-pic"
+                />
+                <div class="home-container25">
+                  <h1 class="home-text56 Content-L">Robin Paule</h1>
+                  <span class="Content">Web Development</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="home-tilt-right"></div>
+        <div id="faqSection" class="home-faq-wrapper">
+          <div class="home-faq">
+            <div class="home-faq-headline">
+              <h1 class="home-text58">FAQ</h1>
+              <span class="Content">
+                This is a quick overview of questions regarding the
+                installation, license and usage of Opossum. We have also
+                collected many common questions in a more in depth-FAQ.
+              </span>
+            </div>
+            <div class="home-container26">
+              <div class="faq-item">
+                <div id="faq-q1" class="faq-question">
+                  <span class="home-text60 Heading">
+                    Will my license expire?
+                  </span>
+                  <svg viewBox="0 0 1024 1024" class="svg-icon">
+                    <path
+                      d="M316 366l196 196 196-196 60 60-256 256-256-256z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="faq-answer">
+                  <span class="home-text61">
+                    Your license does not expire.
+                  </span>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div id="faq-q1" class="faq-question">
+                  <span class="home-text62 Heading">
+                    Does Opossum work on mac?
+                  </span>
+                  <svg viewBox="0 0 1024 1024" class="svg-icon">
+                    <path
+                      d="M316 366l196 196 196-196 60 60-256 256-256-256z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="faq-answer">
+                  <span class="home-text63">
+                    <span>
+                      Unfortunately our optimization plugin is only available
+                      for Windows.
+                    </span>
+                    <br />
+                  </span>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div id="faq-q1" class="faq-question">
+                  <span class="home-text66 Heading">
+                    Which Rhino versions are supported?
+                  </span>
+                  <svg viewBox="0 0 1024 1024" class="svg-icon">
+                    <path
+                      d="M316 366l196 196 196-196 60 60-256 256-256-256z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="faq-answer">
+                  <span class="home-text67">
+                    <span>
+                      The latest version of Opossum supports Rhino7 &amp; 8.
+                    </span>
+                    <br />
+                  </span>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div id="faq-q1" class="faq-question">
+                  <span class="home-text70 Heading">
+                    I didn't receive an email after signing up.
+                  </span>
+                  <svg viewBox="0 0 1024 1024" class="svg-icon">
+                    <path
+                      d="M316 366l196 196 196-196 60 60-256 256-256-256z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="faq-answer">
+                  <span class="home-text71">
+                    <span>
+                      Before you proceed, please check your spamfolder. If you
+                      still can not find it, simply reload your browser and try
+                      to sign up again. As your key is also displayed on the
+                      page after submitting your details, you should be able to
+                      use Opossum despite not getting an email. Should there be
+                      a persistent problem with the signup process please
+                      contact our support.
+                    </span>
+                    <br />
+                  </span>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div id="faq-q1" class="faq-question">
+                  <span class="home-text74 Heading">
+                    I lost my license key or changed my email.
+                  </span>
+                  <svg viewBox="0 0 1024 1024" class="svg-icon">
+                    <path
+                      d="M316 366l196 196 196-196 60 60-256 256-256-256z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="faq-answer">
+                  <span class="home-text75">
+                    <span>
+                      No problem! Just fill out the form with your (new)
+                      details. Be aware that if you use your old email again,
+                      you will get the same license key as before, but with a
+                      new email also comes a new key.
+                    </span>
+                    <br />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="home-tilt-left"></div>
+        <div class="home-cta-paper-wrapper">
+          <div class="home-cta-paper">
+            <div class="home-cta-paper-download">
+              <h1 class="home-text83">
+                <span class="Heading">
+                  Read the original paper on Opossum and its algorithm
+                </span>
+                <a
+                  href="https://www.researchgate.net/publication/315897724_Opossum_Introducing_and_Evaluating_a_Model-based_Optimization_Tool_for_Grasshopper"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  class="home-link7"
+                >
+                  here.
+                </a>
+              </h1>
+              <div class="home-container27"></div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-container footer-root-class-name">
+          <div class="footer-footer">
+            <div class="footer-container1">
+              <div class="footer-footer-cloumn">
+                <a href="#licenseSection" class="footer-text5 Content">
+                  <span>License</span> 
+                </a>
+                <a href="https://www.food4rhino.com/en/app/opossum-optimization-solver-surrogate-models" class="footer-text5 Content" target="_blank">
+                  <span>Download</span> 
+                </a>
+                <a href="#learnSection" class="footer-text5 Content">
+                  <span>Learn</span> 
+                </a>
+              </div>
+              <div class="footer-footer-cloumn1">
+                <a href="#contributorsSection" class="footer-text5 Content">
+                  <span>Team</span> 
+                </a>
+                <a href="#faqSection" class="footer-text5 Content">
+                  <span>FAQ</span> 
+                </a>
+                <a href="legal-notice.html" class="footer-text5 Content">
+                  <span>Legal notice</span> 
+                </a>
+              </div>
+            </div>
+            <span id="copyright-year" class="footer-text6">
+              <span>
+                © YEAR Institute for Computational Design, University of
+                Stuttgart
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./js/script.js" defer=""></script>
+    <script type="module" src="./js/index.js" defer=""></script>
+  </body>
+</html>
