@@ -153,6 +153,7 @@
   display: flex;
   align-items: flex-start;
   flex-direction: column;
+  gap: var(--dl-space-space-unit);
 }
 
 
@@ -247,9 +248,6 @@
   .menu-text05 {
     font-size: 28px;
     font-family: Miriam Libre;
-  }
-  .menu-container5 {
-    gap: var(--dl-space-space-unit);
   }
 }
 
@@ -1113,7 +1111,7 @@
   gap: var(--dl-space-space-unit);
   width: 100%;
   display: flex;
-  max-width: 1000px;
+  max-width: 1200px;
   align-items: center;
   padding-top: var(--dl-space-space-threeunits);
   padding-left: 0px;
@@ -1384,6 +1382,7 @@
 .home-link7 {
   text-decoration: underline;
 }
+
 /*DYNAMIC ADJUSTMENTS*/
 @media(max-width: 991px) {
   .home-container20 {
@@ -1426,6 +1425,11 @@
   }
   .home-text48 {
     text-align: left;
+  }
+  .home-contributors-profiles {
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
   }
 }
 @media(max-width: 767px) {
