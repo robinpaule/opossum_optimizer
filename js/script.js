@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const burgerMenuButton = document.querySelector('[data-role="BurgerMenu"]');
     const mobileMenu = document.querySelector('[data-role="MobileMenu"]');
+    const menuItems = mobileMenu.querySelectorAll('a'); // Select all links inside the menu
 
     burgerMenuButton.addEventListener('click', () => {
         mobileMenu.classList.toggle('visible');
@@ -23,6 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isClickInsideMenu && !isClickBurgerButton && mobileMenu.classList.contains('visible')) {
             mobileMenu.classList.remove('visible');
         }
+    });
+
+    menuItems.forEach(item => {
+        item.addEventListener('click', () => {
+            mobileMenu.classList.remove('visible');
+        });
     });
 });
 
