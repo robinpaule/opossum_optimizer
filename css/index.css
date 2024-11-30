@@ -1070,13 +1070,8 @@
   height: auto;
   min-width: 520px;
   min-height: 292px;
-}
-.home-iframe1 {
-  flex: 1;
-  width: auto;
-  height: auto;
-  min-width: 520px;
-  min-height: 292px;
+  border-radius: var(--dl-radius-radius-radius8);
+  box-shadow: 0px 5px 45px 0px rgba(0, 0, 0, 0.15);
 }
 .home-text-block1 {
   width: auto;
@@ -1472,11 +1467,6 @@
     height: auto;
     align-self: flex-start;
   }
-  .home-iframe1 {
-    width: auto;
-    height: auto;
-    align-self: flex-start;
-  }
   .home-text48 {
     width: 100%;
     text-align: left;
@@ -1606,14 +1596,7 @@
     min-width: 330px;
     align-self: flex-start;
     min-height: 185px;
-  }
-  .home-iframe1 {
-    flex: 0;
-    width: auto;
-    height: auto;
-    min-width: 330px;
-    align-self: flex-start;
-    min-height: 185px;
+
   }
   .home-text47 {
     text-align: left;
