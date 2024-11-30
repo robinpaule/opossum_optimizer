@@ -112,8 +112,8 @@ async function loadPage() {
         await initializeFirebase();
         await updateDownloadCount();
 
-        document.getElementById('vimeoIframe1').src = "https://www.youtube.com/embed/Z8Rk3Tkk7VI";
-        document.getElementById('vimeoIframe2').src = "https://www.youtube.com/embed/6OuPk_c-DlM";
+        document.getElementById('vimeoIframe1').src = "https://www.youtube.com/embed/Z8Rk3Tkk7VI?modestbranding=1&rel=0";
+        document.getElementById('vimeoIframe2').src = "https://www.youtube.com/embed/6OuPk_c-DlM?modestbranding=1&rel=0";
 
         setTimeout(() => {
             alertPrivacyConsent.style.display = 'none';
