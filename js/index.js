@@ -114,6 +114,7 @@ async function loadPage() {
 
         document.getElementById('vimeoIframe1').src = "https://www.youtube.com/embed/Z8Rk3Tkk7VI?modestbranding=1&rel=0";
         document.getElementById('vimeoIframe2').src = "https://www.youtube.com/embed/6OuPk_c-DlM?modestbranding=1&rel=0";
+        document.getElementById('videoContent1').src = "https://www.youtube.com/embed/zrRpPAWBsEM?modestbranding=1&rel=0";
 
         setTimeout(() => {
             alertPrivacyConsent.style.display = 'none';
@@ -124,9 +125,9 @@ async function loadPage() {
 }
 
 // Patterns for validation
-const namePattern = /^[a-zA-ZÀ-ÿ\s'-]+$/; // Allows letters (including accented), spaces, hyphens, apostrophes
-const institutionPattern = /^[a-zA-Z0-9À-ÿ\s'.,\-/&]+$/; // Allows letters, numbers, spaces, common punctuation
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const namePattern = /^[\p{L}\p{M}\s'’\-]{1,40}$/u;
+const institutionPattern = /^[\p{L}\p{M}\d .,'&()\/\-]{1,80}$/u;
+const emailPattern = /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
 function validateInput(inputElement, pattern) {
     const value = inputElement.value.trim();
